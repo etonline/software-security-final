@@ -25,8 +25,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     token = user_params[:token]
-    @graph = Koala::Facebook::API.new(token, Rails.application.secrets.fb_app_secret)
-    profile = @graph.get_object("me?fields=id,first_name,last_name,picture,gender")
+    profile = User.get_profile_from_facebook(token)
     @user = User.find_by_facebook_id(profile['id'])
     if @user.blank?
       # If User does not exist

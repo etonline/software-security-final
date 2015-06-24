@@ -24,17 +24,10 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    @user = User.find_by_token(user_params[:token])
+    profile = User.get_profile_from_facebook(user_params[:token])
+    @user = User.find_by_facebook_id(profile['id'])
     if !@user.blank?
       @article = @user.articles.new(article_params)
-    else
-      @graph = Koala::Facebook::API.new(user_params[:token], Rails.application.secrets.fb_app_secret)
-      profile = @graph.get_object("me?fields=id,first_name,last_name,picture,gender")
-      @user = User.find_by_facebook_id(profile['id'])
-      if !@user.blank?
-        @user.token = user_params[:token]
-        @article = @user.articles.new(article_params)
-      end
     end
 
     respond_to do |format|
