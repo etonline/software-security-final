@@ -24,7 +24,7 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    profile = User.get_profile_from_facebook(user_params[:token])
+    profile = User.get_profile_from_facebook(article_params[:token])
     @user = User.find_by_facebook_id(profile['id'])
     if !@user.blank?
       @article = @user.articles.new(article_params)
@@ -73,9 +73,6 @@ class ArticlesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:content,:emotion)
-    end
-    def user_params
-      params.require(:user).permit(:token)
+      params.require(:article).permit(:content,:emotion,:token)
     end
 end
