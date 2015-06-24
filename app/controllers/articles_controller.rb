@@ -36,7 +36,7 @@ class ArticlesController < ApplicationController
         @article = @user.articles.new(article_params)
       end
     end
-]
+
     respond_to do |format|
       if @article.save
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
