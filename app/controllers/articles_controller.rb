@@ -29,7 +29,7 @@ class ArticlesController < ApplicationController
     if !@user.blank?
       input_params = article_params
       input_params.delete(:token)
-      @article = @user.articles.new(article_params)
+      @article = @user.articles.new(input_params)
     end
 
     respond_to do |format|
