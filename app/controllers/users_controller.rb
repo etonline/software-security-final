@@ -21,6 +21,17 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def query
+    token = user_params[:token]
+    profile = User.get_profile_from_facebook(token)
+    @user = User.find_by_facebook_id(profile['id'])
+    if @user.blank?
+      render :json => {:id => "0"}
+    else
+      redirect_to user_path(@user, format: :json)
+    end
+  end
+
   # POST /users
   # POST /users.json
   def create
