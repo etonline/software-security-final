@@ -28,7 +28,7 @@ class ArticlesController < ApplicationController
     if !@user.blank?
       @article = @user.articles.new(article_params)
     else
-      @graph = Koala::Facebook::API.new(user_params[:token])
+      @graph = Koala::Facebook::API.new(user_params[:token], Rails.application.secrets.fb_app_secret)
       profile = @graph.get_object("me?fields=id,first_name,last_name,picture,gender")
       @user = User.find_by_facebook_id(profile['id'])
       if !@user.blank?
