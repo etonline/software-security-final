@@ -204,7 +204,7 @@ GEM
     spring (1.3.6)
     sprockets (3.2.0)
       rack (~> 1.0)
-    sprockets-rails (2.3.1)
+    sprockets-rails (2.3.2)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
@@ -249,7 +249,7 @@ DEPENDENCIES
   devise
   jbuilder (~> 2.0)
   jquery-rails
-  koala (~> 2.0)
+  koala
   mysql2
   rails (= 4.2.1)
   sass-rails (~> 5.0)

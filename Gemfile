@@ -35,7 +35,7 @@ gem 'unicorn'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
 #Facebook API
-gem "koala", "~> 2.0"
+gem 'koala'
 
 group :development do
   gem 'capistrano', '~> 3.4.0'

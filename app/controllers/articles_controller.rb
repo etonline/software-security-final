@@ -24,8 +24,19 @@ class ArticlesController < ApplicationController
   # POST /articles
   # POST /articles.json
   def create
-    @article = Article.new(article_params)
-
+    @user = User.find_by_token(user_params[:token])
+    if !@user.blank?
+      @article = @user.articles.new(article_params)
+    else
+      @graph = Koala::Facebook::API.new(user_params[:token])
+      profile = @graph.get_object("me?fields=id,first_name,last_name,picture,gender")
+      @user = User.find_by_facebook_id(profile['id'])
+      if !@user.blank?
+        @user.token = user_params[:token]
+        @article = @user.articles.new(article_params)
+      end
+    end
+]
     respond_to do |format|
       if @article.save
         format.html { redirect_to @article, notice: 'Article was successfully created.' }
@@ -69,6 +80,9 @@ class ArticlesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def article_params
-      params.require(:article).permit(:content)
+      params.require(:article).permit(:content,:emotion)
+    end
+    def user_params
+      params.require(:user).permit(:token)
     end
 end

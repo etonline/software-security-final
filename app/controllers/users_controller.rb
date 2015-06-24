@@ -24,7 +24,25 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    token = user_params[:token]
+    @graph = Koala::Facebook::API.new(token)
+    profile = @graph.get_object("me?fields=id,first_name,last_name,picture,gender")
+    @user = User.find_by_facebook_id(profile['id'])
+    if @user.blank?
+      # If User does not exist
+      @user = User.new
+      @user.facebook_id = profile['id']
+      @user.first_name = profile['first_name']
+      @user.last_name = profile['last_name']
+      @user.gender = profile['gender']
+      @user.avatar_url = profile['picture']['data']['url']
+    else
+      #If exists, update info.
+      @user.first_name = profile['first_name']
+      @user.last_name = profile['last_name']
+      @user.gender = profile['gender']
+      @user.avatar_url = profile['picture']['data']['url']
+    end
 
     respond_to do |format|
       if @user.save
