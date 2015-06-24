@@ -27,6 +27,8 @@ class ArticlesController < ApplicationController
     profile = User.get_profile_from_facebook(article_params[:token])
     @user = User.find_by_facebook_id(profile['id'])
     if !@user.blank?
+      input_params = article_params
+      input_params.delete(:token)
       @article = @user.articles.new(article_params)
     end
 
